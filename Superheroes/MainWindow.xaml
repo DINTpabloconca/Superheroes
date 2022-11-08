@@ -1,0 +1,126 @@
+﻿<Window x:Class="Superheroes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Superheroes"
+        mc:Ignorable="d"
+        Title="Superhéroes" Height="600" Width="1000" MinHeight="500" MinWidth="700" Icon="Resources/shield.ico"
+        xmlns:convertidores="clr-namespace:Superheroes.Convertidores">
+    <Window.Resources>
+        <convertidores:convertidorOrganizacion x:Key="convertidorOrganizacion"/>
+        <Style TargetType="{x:Type Image}" x:Key="organizaciones">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+        </Style>
+        <Style TargetType="Image" x:Key="flechas">
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="Source" Value="Resources/arrow.png"/>
+            <EventSetter Event="MouseLeftButtonDown" Handler="Arrow_MouseLeftButtonDown"/>
+        </Style>
+        <Style TargetType="{x:Type Image}" x:Key="Personaje">
+            <Setter Property="Margin" Value="10"></Setter>
+            <Setter Property="Opacity" Value="0.5"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type  Border}" x:Key="border">
+            <Setter Property="BorderBrush" Value="Black"></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=Imagen, Path=isMouseOver}" Value="true">
+                    <Setter Property="BorderThickness" Value="25"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type Image}" x:Key="imgVengador" BasedOn="{StaticResource organizaciones}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Personaje.Vengador}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type Image}" x:Key="imgXmen" BasedOn="{StaticResource organizaciones}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Personaje.Xmen}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DockPanel" x:Key="contenedor">
+            <Setter Property="Background" Value="IndianRed"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Personaje.Heroe}" Value="True">
+                    <Setter Property="Background" Value="PaleGreen"></Setter>
+
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="Nombre">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="60" Duration="0:0:3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="35" Duration="0:0:3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Style="{StaticResource contenedor}">
+        <DockPanel LastChildFill="False" DockPanel.Dock="Top">
+            <TextBlock x:Name="Nombre" Text="{Binding Path=Personaje.Nombre}" Style="{StaticResource Nombre}"/>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Image Source="Resources/avengers.png" Style="{StaticResource imgVengador}"/>
+                <Image Source="Resources/xmen.png" Style="{StaticResource imgXmen}"/>
+            </StackPanel>
+        </DockPanel>
+
+        <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Margin="10">
+            <Image Tag="Atras" Style="{StaticResource flechas}"/>
+            <TextBlock Text="{Binding Path=Posicion}"/>
+            <TextBlock Text="/"/>
+            <TextBlock Text="{Binding Path=Total}"/>
+            <Image Tag="Delante" Style="{StaticResource flechas}" RenderTransformOrigin="0.5,0.5" >
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="180"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </WrapPanel>
+        <Border Style="{StaticResource border}">
+        <Image x:Name="Imagen" Style="{StaticResource Personaje}" Stretch="UniformToFill" Source="{Binding Path=Personaje.Imagen}"/>
+        </Border>
+    </DockPanel>
+</Window>
