@@ -22,7 +22,6 @@
             <EventSetter Event="MouseLeftButtonDown" Handler="Arrow_MouseLeftButtonDown"/>
         </Style>
         <Style TargetType="{x:Type Image}" x:Key="Personaje">
-            <Setter Property="Margin" Value="10"></Setter>
             <Setter Property="Opacity" Value="0.5"></Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -31,11 +30,12 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type  Border}" x:Key="border">
+            <Setter Property="Margin" Value="10"></Setter>
             <Setter Property="BorderBrush" Value="Black"></Setter>
             <Setter Property="BorderThickness" Value="0"></Setter>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=Imagen, Path=isMouseOver}" Value="true">
-                    <Setter Property="BorderThickness" Value="25"></Setter>
+                <DataTrigger Binding="{Binding ElementName=Imagen, Path=IsMouseOver}" Value="true">
+                    <Setter Property="BorderThickness" Value="5"></Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
