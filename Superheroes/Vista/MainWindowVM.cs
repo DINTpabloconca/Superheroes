@@ -1,6 +1,8 @@
-﻿using Superheroes.Clases;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Superheroes.Clases;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Superheroes.VistaModelo
 {
-    class MainWindowVM : INotifyPropertyChanged
+    class MainWindowVM : ObservableObject
     {
         private Superheroe personaje;
 
@@ -18,7 +20,7 @@ namespace Superheroes.VistaModelo
             set
             {
                 personaje = value;
-                this.NotifyPropertyChanged("Personaje");
+                SetProperty(ref personaje, value);
             }
         }
 
@@ -30,7 +32,7 @@ namespace Superheroes.VistaModelo
             set
             {
                 posicion = value;
-                this.NotifyPropertyChanged("Posicion");
+                SetProperty(ref posicion, value);
             }
         }
 
@@ -42,13 +44,17 @@ namespace Superheroes.VistaModelo
             set
             {
                 total = value;
-                this.NotifyPropertyChanged("Total");
+                SetProperty(ref total, value);
             }
         }
-
-        List<Superheroe> listaSuperheroes = Superheroe.GetSamples();
+        private SuperheroesService servicio_Heroes;
+        ObservableCollection<Superheroe> listaSuperheroes;
+        private DialogosService servicio_Dialogo;
         public MainWindowVM()
         {
+            servicio_Dialogo = new DialogosService();
+            servicio_Heroes = new SuperheroesService();
+            listaSuperheroes = servicio_Heroes.ObtenerSuperheroes();
             this.Personaje = listaSuperheroes[0];
             this.Posicion = 1;
             this.Total = listaSuperheroes.Count;
@@ -60,6 +66,10 @@ namespace Superheroes.VistaModelo
                 Posicion++;
                 Personaje = listaSuperheroes[Posicion - 1];
             }
+            else
+            {
+                servicio_Dialogo.MostrarMensaje("Has llegado al final");
+            }
 
         }
         public void Retroceder()
@@ -69,13 +79,13 @@ namespace Superheroes.VistaModelo
                 Posicion--;
                 Personaje = listaSuperheroes[Posicion - 1];
             }
+            else
+            {
+                servicio_Dialogo.MostrarMensaje("Has llegado al principio");
+            }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void NotifyPropertyChanged(string propertyName)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+
     }
 
 }

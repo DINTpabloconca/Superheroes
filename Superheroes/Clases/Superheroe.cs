@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -87,9 +88,9 @@ namespace Superheroes.Clases
             Heroe = heroe;
         }
 
-        public static List<Superheroe> GetSamples()
+        public static ObservableCollection<Superheroe> GetSamples()
         {
-            List<Superheroe> ejemplos = new List<Superheroe>();
+            ObservableCollection<Superheroe> ejemplos = new ObservableCollection<Superheroe>();
 
             Superheroe ironman = new Superheroe("Ironman", @"https://dossierinteractivo.com/wp-content/uploads/2021/01/Iron-Man.png", true, false, true);
             Superheroe kingpin = new Superheroe("Kingpin", @"https://www.comicbasics.com/wp-content/uploads/2017/09/Kingpin.jpg", false, false, false);
